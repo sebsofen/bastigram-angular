@@ -1,0 +1,52 @@
+<div *ngIf="post"  class="ui comments" style="padding-left:0.5em;padding-bottom:0.5em;">
+            <div class="comment">
+                <a class="avatar">
+                    <img  src="/assets/img/avatar/me.jpg">
+                </a>
+                <div class="content ">
+                <a class="author">Sebastian Horwege</a>
+                <div class="text"></div>
+                
+
+
+                </div>
+            </div>
+</div>
+        <div class="ui">
+          <div class="module module--horizontal">
+			<div glidejs id="CarouselPost" class="glide">
+        <!-- glider repeat for images--> 
+				<div class="glide__wrapper">
+					<ul class="glide__track">
+                        <ng-container *ngFor="let postContent of displayVars()">
+                        <imagesentry *ngIf="postContent.type=='IMGS'" [postImages]="postContent"></imagesentry>
+                        </ng-container>
+					</ul>
+				</div>
+        <!-- show only, when multiple images -->
+        <div class="glide__bullets"></div>
+
+			</div>
+		</div>
+        </div>
+        <div class="ui comments" style="padding-left:10px;">
+            <div class="comment">
+                <div class="content">
+                    <div class="metadata">
+                            <i (click)="setLike()" *ngIf="!iLikePost" class="grey big empty heart icon"></i>
+                            <i (click)="setDisLike()" *ngIf="iLikePost" class="grey big heart icon"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    
+
+                    <span class="author">{{likesCount}} Likes</span>
+               
+                    <div class="extra text" Markdown>   {{post.body()}}         </div>
+                </div>
+                <div class="metadata">
+                    <span class="reply">{{created()}}</span>
+                </div>
+                
+            </div>
+        </div>

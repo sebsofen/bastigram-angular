@@ -1,0 +1,30 @@
+<div class="ui search searchbox">
+            <div class="ui icon input">
+                <input class="prompt" type="text" placeholder="Searcha" (ngModelChange)="searchChange($event)" [(ngModel)]="searchText">
+                <i class="search icon"></i>
+            </div>
+            <div class="results transition " [ngClass]="{'visible': searchText != ''}">
+                
+                <div *ngFor="let post of searchResultPosts"  class="ui comments" >
+                    <a class="comment"  href="./single/{{post.slug}}">
+                    
+                        <a class="avatar">
+                            <img  src="/postassets/{{post.slug}}/{{post.images[0].path}}">
+                        </a>
+                        <div class="content ">
+                        <div class="text">{{post.body.text}}</div>
+
+
+                        </div>
+                    </a>
+                </div>
+                
+                
+                <div *ngFor="let tag of searchResultHashTags"  class="ui left aligned segment" >
+                     <a class="comment"  href="./row/tags/{{encodeTag(tag.tag)}}">
+                    {{tag.tag}}
+                    </a>
+                </div>
+
+            </div>
+        </div>

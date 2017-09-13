@@ -12,6 +12,8 @@
   },
   "private": true,
   "dependencies": {
+    "angular2-infinite-scroll": "*",
+    "angular2-markdown": "*",
     "@angular/animations": "^4.2.4",
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
