@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { Config } from "app/config/config";
-import { RestService, Post } from "app/rest/rest.service";
+import { RestService, Post, PostImages } from "app/rest/rest.service";
 import { Observable } from "rxjs/Observable";
 
 @Component({
@@ -10,7 +10,7 @@ import { Observable } from "rxjs/Observable";
 })
 export class ImageRowsComponent implements OnInit{
   offset = 0
-  posts = Array<Post>()
+  posts = Array<Post>() 
   filterStr : string = "";
   searchStr : string = "";
   
@@ -43,6 +43,15 @@ export class ImageRowsComponent implements OnInit{
       case "tags":
       postsFut = this.restSvc.getPostsByTag(this.searchStr,this.offset,this.config.config().behavior.infscrollstep)
       break;
+      case "location" :
+      postsFut = this.restSvc.getPostsByLocation(this.searchStr,this.offset,this.config.config().behavior.infscrollstep)
+      break;
+      case "my-likes":
+      postsFut = this.restSvc.getPostsByMyLikes(this.offset,this.config.config().behavior.infscrollstep)
+      break;
+      case "all":
+      postsFut = this.restSvc.getPosts(this.offset,this.config.config().behavior.infscrollstep)
+      break;
       default:
       postsFut = this.restSvc.getPosts(this.offset,this.config.config().behavior.infscrollstep)
     }
@@ -50,7 +59,8 @@ export class ImageRowsComponent implements OnInit{
 
     postsFut.subscribe(a  =>{ 
       for (let post of a) {
-        this.posts.push(post)
+        this.posts.push(post) 
+
         console.log("added new post")
       }    
     })

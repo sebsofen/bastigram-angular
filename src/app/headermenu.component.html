@@ -1,31 +1,40 @@
 <!-- MENU -->
 <div class="ui fixed menu centered grid">
-    <div class="center aligned column">
-        <a href="/">
-        <object data="/assets/img/logo.svg" type="image/svg+xml">
+    <div class="sixteen wide mobile eight wide tablet one wide computer column" [routerLink]="['/']" style="cursor:pointer;">
+        
+        <img src="/assets/img/logo.svg" type="image/svg+xml" style="cursor:pointer;" />
             <!-- <img src="yourfallback.jpg" /> -->
-        </object>
-        </a>
+        
+         
     </div>
 
-    <div class="center aligned column ">
+    <div class="sixteen wide mobile eight wide tablet four wide computer column ">
         <object data="/assets/img/bastigram.svg" type="image/svg+xml">
             <!-- <img src="yourfallback.jpg" /> -->
         </object>
     </div>
-    <div class="center aligned column "> </div>
-    <div class="center aligned column ">
+
+    <div class="sixteen wide mobile eight wide tablet four wide computer column ">
         <search></search>
  
     </div>
-
-    <div class="center aligned three wide column "></div>
-
-    <div class="center aligned three wide column  "> 
-                <i class="grey big empty compass icon"></i>
+ 
+    <div class="sixteen wide mobile eight wide tablet four wide computer column "> 
+                <!-- <i class="grey big empty compass icon"></i> -->
+                <a href="/row/my-likes/date">
                 <i class="grey big empty heart icon"></i>
-                <i class="grey big empty user icon"></i>
+                </a>
+                <a href="/row/all/date">
+                <i class="grey big grid layout icon"></i>
+                </a>
+
+                <a href="/map">
+                    <i class="grey big map outline icon"></i>
+                    </a>
           
     </div>
     
 </div>
+
+
+sixteen wide mobile eight wide tablet four wide computer column

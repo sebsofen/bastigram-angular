@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Post } from "./rest/rest.service";
+import { Post, PostImages } from "./rest/rest.service";
 
 @Component({
   selector: '[smallimage]',
@@ -7,6 +7,6 @@ import { Post } from "./rest/rest.service";
 })
 export class SmallImageComponent {
     
-    @Input() post : Post
+    @Input() postImage : PostImages
 
 }

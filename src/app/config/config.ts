@@ -7,8 +7,7 @@ import { Injectable } from '@angular/core';
             rest : {
                 posts : {
                     slice : {
-                        slice  : "/v1/posts/slice/",
-                        bytag  : "/v1/posts/by-tag/",
+                        slice  : "/v1/posts/slice/"
                     },
                     single : "/v1/posts/by-slug/"
                 },
@@ -22,16 +21,22 @@ import { Injectable } from '@angular/core';
                         idislike : "/v1/likes/idislike/",
                         doilike :  "/v1/likes/doilike/",
                         iautolike :"/v1/likes/iautolike/",
+                    },
+                    posts : {
+                        mylikes : function(offset: number, limit: number) {return "/v1/likes/slice/" + offset + "/" + limit + "/my-likes"; }
                     }
                 },                
                 hashTags : {
                     find : "/v1/hashtags/find/",
                 },
+                locations : {
+                    all : "/v1/locations/all"
+                },
 
                 find : "/v1/find/",
             },
             behavior : {
-                infscrollstep : 5,
+                infscrollstep : 15,
             }
         }
     }

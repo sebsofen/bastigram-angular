@@ -16,13 +16,28 @@ export class RestService { //TODO: is config injectable at this point?
             
     }
 
+    getPostsByLocation(locationName:string, offset: Number = 0, limit: Number = 10) : Observable<Array<Post>> {
+        return this.http.get(this.config.config().rest.posts.slice.slice + offset + "/" + limit + "/by-location/" + locationName)
+        .map(response =>{
+            console.log(response)
+            return  response.json().map(jPost =>new Post(jPost));
+        })
+    }
+
     getPostsByTag(tag:string, offset: Number = 0, limit: Number = 10) : Observable<Array<Post>> {
         
         tag = tag.replace("#","%23");
-        console.log(this.config.config().rest.posts.slice.bytag + tag + "/" + offset + "/" + limit);
-        return this.http.get(this.config.config().rest.posts.slice.bytag + tag + "/" + offset + "/" + limit)
+        return this.http.get(this.config.config().rest.posts.slice.slice + offset + "/" + limit + "/by-tag/" + tag)
         .map(response =>{
             console.log("GETPOSTS)")
+            console.log(response)
+            return  response.json().map(jPost =>new Post(jPost));
+        })
+    }
+
+    getPostsByMyLikes(offset: number = 0, limit: number = 15) : Observable<Array<Post>> {
+        return this.http.get(this.config.config().rest.likes.posts.mylikes(offset,limit))
+        .map(response =>{
             console.log(response)
             return  response.json().map(jPost =>new Post(jPost));
         })
@@ -31,10 +46,15 @@ export class RestService { //TODO: is config injectable at this point?
     getPosts(offset: Number = 0, limit: Number = 10) : Observable<Array<Post>> {
         return this.http.get(this.config.config().rest.posts.slice.slice + offset + "/" + limit + "/by-date" )
         .map(response =>{
-            console.log("GETPOSTS)")
-            console.log(response)
             return  response.json().map(jPost =>new Post(jPost));
         })
+    }
+
+    getAllLocations() : Observable<Array<PostMap>> {
+        return this.http.get(this.config.config().rest.locations.all )
+        .map(response => {
+            return response.json().map(jMap => new PostMap(jMap));
+        });
     }
 
     getPost(slug:string) : Observable<Post> {
@@ -109,10 +129,8 @@ class Image {
 }
  
 export class Post {
-    location: Location
     hashTags : Array<HashTag>
-    slug: string
-    created: Number
+    slug: string 
     images: Array<Image>
     likes: Number
     memory : Map<string,PostContent> 
@@ -126,13 +144,72 @@ export class Post {
 
     }
 
+    displayVars() : Array<PostContent>  {
+        var lists = this.memory.get("display") as PostList        
+        return lists.list.map(item => this.memory.get(item));
+      }
+    
+    displayImages() : Array<PostImages> {
+        return <Array<PostImages>> this.displayVars().filter(pC => pC.type == "IMGS")
+    }
+
+    public location() : string {
+        try {
+            var location = this.memory.get("location") as PostMap
+            if(location == undefined) {
+                return ".";
+            }else{
+                return location.name;
+            }
+            
+
+        }catch(e) {
+            return ".";
+        }
+    }
     public body() : string{
         try {
             var body = this.memory.get("postBody") as PostBody
-            return body.body;
+            var bodyStr = body.body;
+            const regex = /\#([^ ]+)/g;
+            let m;
+            
+            while ((m = regex.exec(body.body)) !== null) {
+                // This is necessary to avoid infinite loops with zero-width matches
+                if (m.index === regex.lastIndex) {
+                    regex.lastIndex++;
+                }
+                
+                // The result can be accessed through the `m`-variable.
+                m.forEach((match, groupIndex) => {
+                    var tagname = match.replace("#","")
+                    bodyStr = bodyStr.replace(match,"[" + match + "](/row/tags/%23" + tagname + ")")
+                });
+            }
+
+
+            return bodyStr;
         }catch (e){
             return "";
         }
+    }
+
+    public created() : number {
+        try {
+            var created = <PostDate>this.memory.get('created')
+            return created.date;
+          }catch(e){
+            return -1;
+          }
+    }
+
+    public taken() : number {
+        try {
+            var taken = <PostDate>this.memory.get('taken')
+            return taken.date;
+          }catch(e){
+            return -1;
+          }
     }
 
 
@@ -159,6 +236,9 @@ export class PostMemory {
                 case "DATE":
                 this.memory.set(element, new PostDate(value.cnt));
                 break;
+                case "MAP":
+                this.memory.set(element, new PostMap(value.cnt));
+                break;
                 //TODO: add more
                 default:
                 console.error("type " + value.type + " unknown")
@@ -174,6 +254,24 @@ export class PostMemory {
 export abstract class PostContent {
     type: string = "UNKNOWN";
 
+}
+
+export class PostMap extends PostContent {
+    type = "MAP"
+    geofile : Array<string>
+    name : string
+    latLon : LatLon
+    constructor(jMap: any) {
+        super();
+        this.geofile = jMap.geofile;
+        this.name = jMap.name;
+        this.latLon = jMap.latLon;
+    }
+}
+
+export class LatLon  {
+    lat: number
+    lon: number
 }
 
 export class PostImages extends PostContent {
@@ -193,10 +291,7 @@ export class PostDate extends PostContent {
         this.date = jDate.timestamp
     }
 
-    public toDateString() : string {
-        var d = new Date(this.date);
-        return d.getDay() + "." + d.getMonth() + "." + d.getFullYear();
-    }
+
 }
 
 class PostList extends PostContent {
@@ -216,6 +311,8 @@ class PostBody extends PostContent{
         this.body = jBody.body
     }
 }
+
+
 
 export class SearchResult {
     hashTags: Array<HashTag>

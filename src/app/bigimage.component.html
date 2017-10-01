@@ -1,11 +1,11 @@
-<div *ngIf="post"  class="ui comments" style="padding-left:0.5em;padding-bottom:0.5em;">
+<div *ngIf="post"  class="ui comments" style="padding-left:0.5em;margin-bottom:0.0em;">
             <div class="comment">
                 <a class="avatar">
                     <img  src="/assets/img/avatar/me.jpg">
                 </a>
                 <div class="content ">
                 <a class="author">Sebastian Horwege</a>
-                <div class="text"></div>
+                <div class="text">{{post.location()}}</div>
                 
 
 
@@ -18,8 +18,9 @@
         <!-- glider repeat for images--> 
 				<div class="glide__wrapper">
 					<ul class="glide__track">
-                        <ng-container *ngFor="let postContent of displayVars()">
+                        <ng-container *ngFor="let postContent of post.displayVars()">
                         <imagesentry *ngIf="postContent.type=='IMGS'" [postImages]="postContent"></imagesentry>
+                        <mapentry *ngIf="postContent.type=='MAP'" [postMap]="postContent"></mapentry>
                         </ng-container>
 					</ul>
 				</div>
@@ -45,7 +46,12 @@
                     <div class="extra text" Markdown>   {{post.body()}}         </div>
                 </div>
                 <div class="metadata">
-                    <span class="reply">{{created()}}</span>
+                    <span class="reply">
+                        <basti-date [timestamp]="post.created()"></basti-date>
+                        <ng-container *ngIf="post.taken() != -1">
+                            (<basti-date [timestamp]="post.taken()"></basti-date>)  
+                        </ng-container>
+                    </span>
                 </div>
                 
             </div>

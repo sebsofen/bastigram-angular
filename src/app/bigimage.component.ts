@@ -1,18 +1,21 @@
 import { Component, Input } from '@angular/core';
 import { Post, PostContent, PostDate, RestService } from "./rest/rest.service";
-import { OnChanges, SimpleChanges } from '@angular/core';
+import { OnChanges, SimpleChanges, OnInit } from '@angular/core';
+
+
 @Component({
   selector: '[bigimage]',
   templateUrl: './bigimage.component.html',
   
 })
-export class BigImageComponent implements OnChanges {
+export class BigImageComponent implements OnChanges{
   likesCount : number = 0;
   iLikePost = false;
 
   constructor(private rest: RestService) {
 
   }
+
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.post && changes.post.currentValue){
@@ -38,18 +41,7 @@ export class BigImageComponent implements OnChanges {
 
 
     @Input() post : Post
+ 
 
-    displayVars() : Array<PostContent>  {
-      return Array.from(this.post.memory.values());
-    }
-
-    created() : string {
-      try {
-        var created = <PostDate>this.post.memory.get('created');
-        return created.toDateString();
-      }catch(e){
-        return "";
-      }
-      
-    }
+ 
 }

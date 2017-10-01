@@ -25,6 +25,9 @@ import { NotFoundComponent } from "app/notfound.component";
 import { SingleimageComponent } from "app/singleimage.component";
 import { SmallImageComponent } from "app/smallimage.component";
 import { ImagesEntry } from "app/postentries/images.entry";
+import { DateDirective } from "app/shared/date.directive";
+import { MapEntry } from "app/postentries/map.entry";
+import { MapComponent } from "app/map/map.component";
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { ImagesEntry } from "app/postentries/images.entry";
     SingleimageComponent,
     ImageRowsComponent,
     SmallImageComponent,
-
+    DateDirective,
+    MapEntry,
+    MapComponent,
     ImagesEntry
                 
   ],
@@ -52,9 +57,9 @@ import { ImagesEntry } from "app/postentries/images.entry";
     MarkdownModule.forRoot(),
     RouterModule.forRoot([
       {path: '', component: ImagesstreamComponent, pathMatch: 'full'},
+      {path:'map', component: MapComponent},
       {path: 'single/:post', component: SingleimageComponent},
       {path: 'row/:filtertype/:filterstring', component: ImageRowsComponent},
-      
       {path: '**', component: NotFoundComponent},
     ])
   ],
