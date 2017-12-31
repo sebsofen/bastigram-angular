@@ -134,23 +134,42 @@ export class Post {
     images: Array<Image>
     likes: Number
     memory : Map<string,PostContent> 
-
+    displayVars : Array<PostContent> 
     constructor(jPost: any) {
         this.slug = jPost.slug
         this.memory = new PostMemory(jPost.memory).memory
         
+        var lists = this.memory.get("display") as PostList     
+        var displayVarsNested =  lists.list.map(item => 
+            {
+                
+                if(item.startsWith("@")){
+                    switch(item) {
+                        case "@map":
+                        var postMapArray = Array.from(this.memory.values()).filter(mem => mem.type=="MAP").map(f => f as PostMap);
+                        return [new PostMapList(postMapArray)];
+                    }
+                }else{
+                    if(this.memory.get(item).type == "IMGS") {
+                        //create images array
+                        var asPostImages = this.memory.get(item) as PostImages
 
-
+                        return asPostImages.toPostImageArray();
+                    }else {
+                        return [this.memory.get(item)]
+                    }
+                }
+                
+            });
+            this.displayVars = [].concat.apply([],displayVarsNested);
+            
 
     }
 
-    displayVars() : Array<PostContent>  {
-        var lists = this.memory.get("display") as PostList        
-        return lists.list.map(item => this.memory.get(item));
-      }
+      
     
     displayImages() : Array<PostImages> {
-        return <Array<PostImages>> this.displayVars().filter(pC => pC.type == "IMGS")
+        return <Array<PostImages>> this.displayVars.filter(pC => pC.type == "IMGS")
     }
 
     public location() : string {
@@ -269,6 +288,15 @@ export class PostMap extends PostContent {
     }
 }
 
+export class PostMapList extends PostContent {
+    type = "MAPLIST"
+    postMapList : Array<PostMap>
+    constructor(postMapList : Array<PostMap>) {
+        super();
+        this.postMapList  = postMapList;
+    }
+}
+
 export class LatLon  {
     lat: number
     lon: number
@@ -280,6 +308,19 @@ export class PostImages extends PostContent {
     constructor(jImages: any) {
         super();
         this.images = jImages.imgs;
+    }
+
+    toPostImageArray() : Array<PostImage> {
+        return this.images.map(img => new PostImage(img))
+    }
+}
+
+export class PostImage extends PostContent {
+    type = "IMG"
+    image : string
+    constructor(img : string) {
+        super();
+        this.image = img;
     }
 }
 

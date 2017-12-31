@@ -28,6 +28,7 @@ import { ImagesEntry } from "app/postentries/images.entry";
 import { DateDirective } from "app/shared/date.directive";
 import { MapEntry } from "app/postentries/map.entry";
 import { MapComponent } from "app/map/map.component";
+import { ImageEntry } from "app/postentries/image.entry";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MapComponent } from "app/map/map.component";
     DateDirective,
     MapEntry,
     MapComponent,
-    ImagesEntry
+    ImagesEntry,
+    ImageEntry
                 
   ],
   imports: [

@@ -14,18 +14,25 @@
 </div>
         <div class="ui">
           <div class="module module--horizontal">
-			<div glidejs id="CarouselPost" class="glide">
+			<div glidejs id="CarouselPost" class="glide" >
+                <div class="glide__arrows" *ngIf="post.displayVars.length > 1">
+                    <button class="glide__arrow prev" data-glide-dir="<"> </button>
+                    <button class="glide__arrow next" data-glide-dir=">"> </button>
+                </div>
         <!-- glider repeat for images--> 
 				<div class="glide__wrapper">
 					<ul class="glide__track">
-                        <ng-container *ngFor="let postContent of post.displayVars()">
-                        <imagesentry *ngIf="postContent.type=='IMGS'" [postImages]="postContent"></imagesentry>
-                        <mapentry *ngIf="postContent.type=='MAP'" [postMap]="postContent"></mapentry>
+                        <ng-container *ngFor="let postContent of post.displayVars">
+                            <imagesentry *ngIf="postContent.type=='IMGS'" [postImages]="postContent"></imagesentry>
+                            <imageentry *ngIf="postContent.type=='IMG'" [postImage]="postContent" (afterViewInitCallback)="entryAfterViewInit()"></imageentry>
+                            <li mapentry class="glide__slide" *ngIf="postContent.type=='MAP'" [postMap]="postContent"></li>
+                            <li mapentry class="glide__slide" *ngIf="postContent.type=='MAPLIST'" [postMap]="postContent"></li>
                         </ng-container>
+                        
 					</ul>
 				</div>
         <!-- show only, when multiple images -->
-        <div class="glide__bullets"></div>
+        <div class="glide__bullets" *ngIf="post.displayVars.length > 1"></div>
 
 			</div>
 		</div>

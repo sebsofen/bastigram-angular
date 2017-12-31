@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Post, PostContent, PostDate, RestService } from "./rest/rest.service";
-import { OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { OnChanges, SimpleChanges, OnInit, ViewChild } from '@angular/core';
+import { GlidejsDirective } from "app/shared/glidejs.directive";
 
 
 @Component({
@@ -38,10 +39,13 @@ export class BigImageComponent implements OnChanges{
     this.iLikePost = false;
   }
 
-
+  entryAfterViewInit() {
+    console.log("AFTER ENTITY VIEW INIT");
+  }
 
     @Input() post : Post
- 
+
+    
 
  
 }

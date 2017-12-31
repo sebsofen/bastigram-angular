@@ -11,6 +11,12 @@ declare let L: any;
   
 })
 export class MapComponent implements AfterViewInit{
+
+   bastigramIcon = L.icon({
+    iconUrl: '/assets/img/logo_marker.png',
+    iconSize:     [40, 53], // size of the icon
+    iconAnchor:   [20, 53] // point of the icon which will correspond to marker's location
+    });
     
     
     guidGenerator() {
@@ -33,7 +39,11 @@ export class MapComponent implements AfterViewInit{
 
       this.rest.getAllLocations().subscribe(locations => {
         var markers = locations.map(location => {
-          return   L.marker([location.latLon.lat, location.latLon.lon], {location: location}).on('click', e => {
+          return   L.marker([location.latLon.lat, location.latLon.lon], 
+            {
+              location: location, 
+              icon: this.bastigramIcon
+            }).on('click', e => {
             var clickedLocation = e.target.options.location;
             console.log(e.target.options.location);
             this.router.navigate(['/row/location/', clickedLocation.name]);
