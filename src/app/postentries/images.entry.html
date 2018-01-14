@@ -1,3 +1,3 @@
 <li *ngFor="let image of postImages.images" class="glide__slide" >
-    <img class="ui image"  src="/postassets/{{image}}">
+    <img class="ui image"  [src]="'/postassets/' + image" style="min-width:100px;min-height:100px" (load)="imageloaded($event)">
 </li>

@@ -7,6 +7,13 @@ import { Post, PostImage } from "app/rest/rest.service";
 })
 export class ImageEntry implements AfterViewInit {
   
+  constructor () {
+    console.log("single image entry loaded");
+  }
+
+  @Output()
+  imageLoadedEvent = new EventEmitter();
+
   ngAfterViewInit(): void {
     //broadcast that view is done
     this.afterViewInitCallback.emit();
@@ -15,5 +22,9 @@ export class ImageEntry implements AfterViewInit {
   @Input() postImage: PostImage;
   @Output() afterViewInitCallback = new EventEmitter();
 
+  imageloaded(event: Event) {
+    console.log("image loaded");
+    this.imageLoadedEvent.emit();
+  }
     
 }
