@@ -6,8 +6,8 @@
             (scrolled)="onScroll()">
 
 
-    <div class="ui centered grid" style="padding-top:150px">
-        <div class="center aligned column" style="flex: 0 0 600px;">
+    <div class="ui mobile sixteen wide centered grid" style="padding-top:150px">
+        <div class="center eight wide computer sixteen wide mobile aligned column" >
             <div *ngFor="let post of posts"  class="ui left aligned segment"  style="padding-left:0px;padding-right:0px;">
                 <div bigimage [post]="post"> </div>
             </div>

@@ -29,6 +29,8 @@ import { DateDirective } from "app/shared/date.directive";
 import { MapEntry } from "app/postentries/map.entry";
 import { MapComponent } from "app/map/map.component";
 import { ImageEntry } from "app/postentries/image.entry";
+import { YoutubeEntry } from "app/postentries/youtube.entry";
+import { SafePipe } from "app/pipes/save.pipe";
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { ImageEntry } from "app/postentries/image.entry";
     MapEntry,
     MapComponent,
     ImagesEntry,
-    ImageEntry
+    ImageEntry,
+    YoutubeEntry,
+    SafePipe
                 
   ],
   imports: [

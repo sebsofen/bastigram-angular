@@ -168,15 +168,15 @@ export class Post {
 
       
     
-    displayImages() : Array<PostImages> {
-        return <Array<PostImages>> this.displayVars.filter(pC => pC.type == "IMGS")
+    displayImages() : Array<PostImage> {
+        return <Array<PostImage>> this.displayVars.filter(pC => pC.type == "IMG")
     }
 
     public location() : string {
         try {
             var location = this.memory.get("location") as PostMap
             if(location == undefined) {
-                return ".";
+                return " ";
             }else{
                 return location.name;
             }
@@ -249,6 +249,9 @@ export class PostMemory {
                 case "IMGS": 
                 this.memory.set(element, new PostImages(value.cnt));
                 break;
+                case "YOUTUBE": 
+                this.memory.set(element, new PostYoutube(value.cnt));
+                break;
                 case "LIST":
                 this.memory.set(element, new PostList(value.cnt));
                 break;
@@ -257,6 +260,9 @@ export class PostMemory {
                 break;
                 case "MAP":
                 this.memory.set(element, new PostMap(value.cnt));
+                break;
+                case "LABEL":
+                this.memory.set(element, new PostLabel(value.cnt));
                 break;
                 //TODO: add more
                 default:
@@ -279,12 +285,18 @@ export class PostMap extends PostContent {
     type = "MAP"
     geofile : Array<string>
     name : string
+    markerType: string
     latLon : LatLon
+    fromTo : Array<LatLon>
+    label: string
     constructor(jMap: any) {
         super();
         this.geofile = jMap.geofile;
         this.name = jMap.name;
         this.latLon = jMap.latLon;
+        this.fromTo = jMap.fromTo;
+        this.markerType = jMap.markerType;
+        this.label = jMap.label;
     }
 }
 
@@ -321,6 +333,24 @@ export class PostImage extends PostContent {
     constructor(img : string) {
         super();
         this.image = img;
+    }
+}
+
+export class PostLabel extends PostContent {
+    type = "LABEL"
+    label : string
+    constructor(jLabl : any) {
+        super();
+        this.label = jLabl.label;
+    }
+}
+
+export class PostYoutube extends PostContent {
+    type = "YOUTUBE"
+    youtubeKey : string
+    constructor(jYoutube : any) {
+        super();
+        this.youtubeKey = jYoutube.youtubeKey;
     }
 }
 

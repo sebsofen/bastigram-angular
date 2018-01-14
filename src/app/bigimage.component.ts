@@ -16,6 +16,9 @@ export class BigImageComponent implements OnChanges{
   constructor(private rest: RestService) {
 
   }
+  @ViewChild(GlidejsDirective)
+  private child: GlidejsDirective;
+  
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -25,6 +28,12 @@ export class BigImageComponent implements OnChanges{
       this.rest.getLikeCount(post.slug).subscribe(count => this.likesCount = count);
       this.rest.getUserLikesPost(post.slug).subscribe(ilike => this.iLikePost = ilike);
     }
+  }
+
+  imageLoadedEventCallback() {
+    console.log("image loaded compoenent in bigimage");
+
+    this.child.update();
   }
 
   setLike() {

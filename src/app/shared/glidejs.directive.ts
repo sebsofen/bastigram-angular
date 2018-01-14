@@ -24,6 +24,7 @@ export class GlidejsDirective implements AfterViewInit {
     public update() {
       console.log("update called from outside");
       //
+      this.gallery_api .refresh()
       
     }
 
@@ -43,7 +44,7 @@ export class GlidejsDirective implements AfterViewInit {
             this.gallery_api = this.$carousel.data('glide_api');
             var a = this.gallery_api;
             //TODO: this is lame and stupid
-            setTimeout( () => this.gallery_api .refresh(), 1000);
+            //setInterval( () => this.gallery_api .refresh(), 10000);
             
   }
 
